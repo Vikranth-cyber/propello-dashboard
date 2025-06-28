@@ -33,17 +33,18 @@ import ContactPage from '../Sidebar/ContactPage';
 const Sidebar = ({ onSelectPage }) => {
   const [activeItem, setActiveItem] = useState('Dashboard');
   const [hoveredItem, setHoveredItem] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // default false
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 1024; // Changed to 1024 for better tablet support
+      const mobile = window.innerWidth <= 1024;
       setIsMobile(mobile);
       if (!mobile) setSidebarOpen(true);
+      else setSidebarOpen(false); // important
     };
 
-    handleResize();
+    handleResize(); // set on initial mount
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -51,47 +52,22 @@ const Sidebar = ({ onSelectPage }) => {
   const handlePageSelect = (name) => {
     setActiveItem(name);
 
-    if (name === 'Dashboard') {
-      onSelectPage('Dashboard');
-    } else {
-      switch (name) {
-        case 'Recordings':
-          onSelectPage(<RecordingsPage />);
-          break;
-        case 'Scripts':
-          onSelectPage(<ScriptsPage />);
-          break;
-        case 'Analytics':
-          onSelectPage(<AnalyticsPage />);
-          break;
-        case 'Scheduling':
-          onSelectPage(<SchedulingPage />);
-          break;
-        case 'Profile':
-          onSelectPage(<ProfilePage />);
-          break;
-        case 'Security':
-          onSelectPage(<SecurityPage />);
-          break;
-        case 'Settings':
-          onSelectPage(<SettingsPage />);
-          break;
-        case 'Billing':
-          onSelectPage(<BillingPage />);
-          break;
-        case 'Help Center':
-          onSelectPage(<HelpCenterPage />);
-          break;
-        case 'Docs':
-          onSelectPage(<DocsPage />);
-          break;
-        case 'Contact':
-          onSelectPage(<ContactPage />);
-          break;
-        default:
-          onSelectPage('Dashboard');
-      }
-    }
+    const pages = {
+      'Dashboard': 'Dashboard',
+      'Recordings': <RecordingsPage />,
+      'Scripts': <ScriptsPage />,
+      'Analytics': <AnalyticsPage />,
+      'Scheduling': <SchedulingPage />,
+      'Profile': <ProfilePage />,
+      'Security': <SecurityPage />,
+      'Settings': <SettingsPage />,
+      'Billing': <BillingPage />,
+      'Help Center': <HelpCenterPage />,
+      'Docs': <DocsPage />,
+      'Contact': <ContactPage />
+    };
+
+    onSelectPage(pages[name] || 'Dashboard');
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -121,22 +97,11 @@ const Sidebar = ({ onSelectPage }) => {
           borderLeft: isActive ? '4px solid #007acc' : 'none',
           textAlign: 'left',
           width: '100%',
-          transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-          transform: isHovered ? 'translateX(4px)' : 'none',
-          ':hover': {
-            background: !isActive && 'rgba(0, 180, 255, 0.08)',
-            color: !isActive && '#007acc'
-          }
+          transition: 'all 0.3s',
+          transform: isHovered ? 'translateX(4px)' : 'none'
         }}
       >
-        <span style={{ 
-          fontSize: '20px', 
-          display: 'flex',
-          transition: 'transform 0.2s ease',
-          transform: isHovered ? 'scale(1.1)' : 'scale(1)'
-        }}>
-          {icon}
-        </span>
+        <span style={{ fontSize: '20px' }}>{icon}</span>
         <span>{name}</span>
       </button>
     );
@@ -145,12 +110,12 @@ const Sidebar = ({ onSelectPage }) => {
   return (
     <>
       {isMobile && (
-        <button 
+        <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           style={{
             position: 'fixed',
             top: '24px',
-            right: '24px', // Changed to right for better mobile ergonomics
+            right: '24px',
             zIndex: 1000,
             background: '#007acc',
             border: 'none',
@@ -163,162 +128,93 @@ const Sidebar = ({ onSelectPage }) => {
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 4px 12px rgba(0, 122, 204, 0.3)',
-            transition: 'all 0.3s ease',
-            ':hover': {
-              background: '#0066a7',
-              transform: 'scale(1.1)',
-              boxShadow: '0 6px 16px rgba(0, 122, 204, 0.4)'
-            },
-            ':active': {
-              transform: 'scale(0.95)'
-            }
+            transition: 'all 0.3s ease'
           }}
           aria-label="Toggle menu"
         >
           {sidebarOpen ? (
-            <RiCloseLine 
-              style={{ 
-                color: 'white', 
-                fontSize: '24px',
-                transition: 'transform 0.3s ease',
-                transform: sidebarOpen ? 'rotate(90deg)' : 'none'
-              }} 
-            />
+            <RiCloseLine style={{ color: 'white', fontSize: '24px' }} />
           ) : (
-            <RiMenu3Line 
-              style={{ 
-                color: 'white', 
-                fontSize: '24px',
-                transition: 'transform 0.3s ease'
-              }} 
-            />
+            <RiMenu3Line style={{ color: 'white', fontSize: '24px' }} />
           )}
         </button>
       )}
-      
+
       <div
         style={{
           position: isMobile ? 'fixed' : 'relative',
           zIndex: 900,
-          transform: isMobile ? 
-            (sidebarOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
-          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+          transform: isMobile
+            ? sidebarOpen
+              ? 'translateX(0)'
+              : 'translateX(-100%)'
+            : 'none',
+          transition: 'transform 0.4s ease',
           height: '100%',
           width: isMobile ? '280px' : '300px',
           backgroundColor: '#fff',
-          boxShadow: isMobile ? '4px 0 30px rgba(0, 0, 0, 0.1)' : '2px 0 20px rgba(0, 0, 0, 0.05)',
+          boxShadow: isMobile
+            ? '4px 0 30px rgba(0, 0, 0, 0.1)'
+            : '2px 0 20px rgba(0, 0, 0, 0.05)',
           borderRight: isMobile ? 'none' : '1px solid rgba(0, 0, 0, 0.05)'
         }}
       >
-        {sidebarOpen && (
-          <aside
+        <aside
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '28px 20px',
+            color: '#333',
+            overflowY: 'auto'
+          }}
+        >
+          <h1
             style={{
-              width: '100%',
-              height: '100%',
-              padding: '28px 20px',
-              color: '#333',
-              overflowY: 'auto',
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#007acc transparent'
+              color: '#007acc',
+              fontSize: '24px',
+              fontWeight: '700',
+              marginBottom: '36px',
+              paddingLeft: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
             }}
           >
-            <h1
-              style={{
-                color: '#007acc',
-                fontSize: '24px',
-                fontWeight: '700',
-                marginBottom: '36px',
-                paddingLeft: '12px',
-                letterSpacing: '0.8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M2 17L12 22L22 17" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M2 12L12 17L22 12" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              PROPELLO AI
-            </h1>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#007acc" />
+              <path d="M2 17L12 22L22 17" fill="#007acc" />
+              <path d="M2 12L12 17L22 12" fill="#007acc" />
+            </svg>
+            PROPELLO AI
+          </h1>
 
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
-              {renderButton('Dashboard', <RiDashboardLine />)}
-            </ul>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+            {renderButton('Dashboard', <RiDashboardLine />)}
+          </ul>
 
-            <div
-              style={{
-                color: '#007acc',
-                margin: '12px 0 12px 16px',
-                fontSize: '12px',
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-              <span>Call Center</span>
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-            </div>
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
-              {renderButton('Recordings', <BsMic />)}
-              {renderButton('Scripts', <BsFileText />)}
-              {renderButton('Analytics', <MdOutlineAnalytics />)}
-              {renderButton('Scheduling', <MdOutlineSchedule />)}
-            </ul>
+          <div style={{ margin: '16px 0', fontSize: '12px', fontWeight: '600', color: '#007acc' }}>Call Center</div>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+            {renderButton('Recordings', <BsMic />)}
+            {renderButton('Scripts', <BsFileText />)}
+            {renderButton('Analytics', <MdOutlineAnalytics />)}
+            {renderButton('Scheduling', <MdOutlineSchedule />)}
+          </ul>
 
-            <div
-              style={{
-                color: '#007acc',
-                margin: '12px 0 12px 16px',
-                fontSize: '12px',
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-              <span>Account</span>
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-            </div>
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
-              {renderButton('Profile', <RiUserLine />)}
-              {renderButton('Security', <RiLockLine />)}
-              {renderButton('Settings', <RiSettingsLine />)}
-              {renderButton('Billing', <RiWalletLine />)}
-            </ul>
+          <div style={{ margin: '16px 0', fontSize: '12px', fontWeight: '600', color: '#007acc' }}>Account</div>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+            {renderButton('Profile', <RiUserLine />)}
+            {renderButton('Security', <RiLockLine />)}
+            {renderButton('Settings', <RiSettingsLine />)}
+            {renderButton('Billing', <RiWalletLine />)}
+          </ul>
 
-            <div
-              style={{
-                color: '#007acc',
-                margin: '12px 0 12px 16px',
-                fontSize: '12px',
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-              <span>Support</span>
-              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
-            </div>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
-              {renderButton('Help Center', <MdOutlineHelp />)}
-              {renderButton('Docs', <MdOutlineLibraryBooks />)}
-              {renderButton('Contact', <MdOutlineContactSupport />)}
-            </ul>
-          </aside>
-        )}
+          <div style={{ margin: '16px 0', fontSize: '12px', fontWeight: '600', color: '#007acc' }}>Support</div>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {renderButton('Help Center', <MdOutlineHelp />)}
+            {renderButton('Docs', <MdOutlineLibraryBooks />)}
+            {renderButton('Contact', <MdOutlineContactSupport />)}
+          </ul>
+        </aside>
       </div>
     </>
   );
