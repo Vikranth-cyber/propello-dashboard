@@ -9,19 +9,24 @@
   padding: 0;
 }
 
-/* Root Variables */
+/* Root Variables: Vibrant Colorful Theme */
 :root {
-  --primary: #04EBF1;
-  --primary-dark: #03D9DF;
-  --primary-light: rgba(4, 235, 241, 0.1);
-  --background: #0A0A0F;
-  --surface: #121218;
-  --surface-light: #1E1E2D;
-  --text-primary: #FFFFFF;
-  --text-secondary: #B0B0B8;
-  --success: #00E676;
-  --error: #FF5252;
-  --warning: #FFA726;
+  --primary: #0EA5E9;
+  --primary-dark: #0284C7;
+  --primary-light: rgba(14, 165, 233, 0.1);
+  --background: #FFFFFF;
+  --surface: #F9FAFB;
+  --surface-light: #E5E7EB;
+
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+
+  --success: #10B981;
+  --error: #F43F5E;
+  --warning: #F59E0B;
+
+  --accent-violet: #8B5CF6;
+  --accent-fuchsia: #D946EF;
 }
 
 /* Body Styles */
@@ -45,6 +50,11 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -52,7 +62,7 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--surface);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -68,11 +78,32 @@ a {
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--surface-light);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 button {
   cursor: pointer;
   transition: all 0.2s ease;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
 }
 
 /* Utility Classes */

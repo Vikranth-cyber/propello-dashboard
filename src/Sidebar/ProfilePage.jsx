@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RiUserLine } from 'react-icons/ri';
+import { useMediaQuery } from 'react-responsive';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -7,8 +8,8 @@ const ProfilePage = () => {
     email: 'vikranth@example.com',
     phone: '9876543210'
   });
-
   const [isEditing, setIsEditing] = useState(false);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -24,35 +25,46 @@ const ProfilePage = () => {
   };
 
   return (
-    <div style={{ padding: '40px' }}>
+    <div style={{ 
+      padding: isMobile ? '20px' : '40px',
+      backgroundColor: '#fff',
+      minHeight: '100vh'
+    }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '15px',
         marginBottom: '30px'
       }}>
-        <RiUserLine size={28} color="#00ff88" />
+        <RiUserLine size={28} color="#007acc" />
         <h1 style={{
-          color: '#00ff88',
-          fontSize: '28px',
+          color: '#007acc',
+          fontSize: isMobile ? '22px' : '28px',
           fontWeight: '700',
           margin: 0,
-          textShadow: '0 0 10px rgba(0, 255, 136, 0.3)'
+          letterSpacing: '0.5px'
         }}>
           User Profile
         </h1>
       </div>
 
       <div style={{
-        backgroundColor: '#121212',
-        padding: '30px',
-        borderRadius: '16px',
-        border: '1px solid rgba(0, 255, 136, 0.1)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-        color: '#ccc'
+        backgroundColor: '#fff',
+        padding: isMobile ? '20px' : '30px',
+        borderRadius: '12px',
+        border: '1px solid rgba(0, 180, 255, 0.2)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
       }}>
         <div style={{ marginBottom: '20px' }}>
-          <label style={{ color: '#00ff88', fontWeight: '600' }}>Full Name</label><br />
+          <label style={{ 
+            display: 'block',
+            color: '#007acc',
+            fontSize: '14px',
+            fontWeight: '600',
+            marginBottom: '8px'
+          }}>
+            Full Name
+          </label>
           <input
             name="name"
             type="text"
@@ -60,19 +72,33 @@ const ProfilePage = () => {
             disabled={!isEditing}
             onChange={handleChange}
             style={{
-              padding: '10px',
-              marginTop: '6px',
               width: '100%',
-              borderRadius: '6px',
-              border: '1px solid #00ff88',
-              backgroundColor: isEditing ? '#1c1c1c' : '#121212',
-              color: '#fff'
+              padding: '12px',
+              borderRadius: '8px',
+              border: '1px solid #007acc',
+              backgroundColor: isEditing ? 'rgba(0, 180, 255, 0.03)' : 'rgba(0, 180, 255, 0.01)',
+              color: '#333',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              ':focus': {
+                outline: 'none',
+                borderColor: '#00b4ff',
+                boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+              }
             }}
           />
         </div>
 
         <div style={{ marginBottom: '20px' }}>
-          <label style={{ color: '#00ff88', fontWeight: '600' }}>Email</label><br />
+          <label style={{ 
+            display: 'block',
+            color: '#007acc',
+            fontSize: '14px',
+            fontWeight: '600',
+            marginBottom: '8px'
+          }}>
+            Email
+          </label>
           <input
             name="email"
             type="email"
@@ -80,19 +106,33 @@ const ProfilePage = () => {
             disabled={!isEditing}
             onChange={handleChange}
             style={{
-              padding: '10px',
-              marginTop: '6px',
               width: '100%',
-              borderRadius: '6px',
-              border: '1px solid #00ff88',
-              backgroundColor: isEditing ? '#1c1c1c' : '#121212',
-              color: '#fff'
+              padding: '12px',
+              borderRadius: '8px',
+              border: '1px solid #007acc',
+              backgroundColor: isEditing ? 'rgba(0, 180, 255, 0.03)' : 'rgba(0, 180, 255, 0.01)',
+              color: '#333',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              ':focus': {
+                outline: 'none',
+                borderColor: '#00b4ff',
+                boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+              }
             }}
           />
         </div>
 
         <div style={{ marginBottom: '20px' }}>
-          <label style={{ color: '#00ff88', fontWeight: '600' }}>Phone Number</label><br />
+          <label style={{ 
+            display: 'block',
+            color: '#007acc',
+            fontSize: '14px',
+            fontWeight: '600',
+            marginBottom: '8px'
+          }}>
+            Phone Number
+          </label>
           <input
             name="phone"
             type="tel"
@@ -100,43 +140,68 @@ const ProfilePage = () => {
             disabled={!isEditing}
             onChange={handleChange}
             style={{
-              padding: '10px',
-              marginTop: '6px',
               width: '100%',
-              borderRadius: '6px',
-              border: '1px solid #00ff88',
-              backgroundColor: isEditing ? '#1c1c1c' : '#121212',
-              color: '#fff'
+              padding: '12px',
+              borderRadius: '8px',
+              border: '1px solid #007acc',
+              backgroundColor: isEditing ? 'rgba(0, 180, 255, 0.03)' : 'rgba(0, 180, 255, 0.01)',
+              color: '#333',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              ':focus': {
+                outline: 'none',
+                borderColor: '#00b4ff',
+                boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+              }
             }}
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: '10px',
+          flexDirection: isMobile ? 'column' : 'row'
+        }}>
           <button
             onClick={isEditing ? handleSave : handleEditToggle}
             style={{
-              backgroundColor: '#00ff88',
-              color: '#000',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '6px',
+              flex: 1,
+              padding: '14px',
+              borderRadius: '8px',
+              background: 'linear-gradient(90deg, #007acc 0%, #00b4ff 100%)',
+              color: '#fff',
               fontWeight: '600',
-              cursor: 'pointer'
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+              boxShadow: '0 4px 15px rgba(0, 180, 255, 0.3)',
+              transition: 'all 0.2s ease',
+              ':hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 6px 20px rgba(0, 180, 255, 0.4)'
+              }
             }}
           >
             {isEditing ? 'Save Changes' : 'Edit Profile'}
           </button>
+          
           {isEditing && (
             <button
               onClick={() => setIsEditing(false)}
               style={{
-                backgroundColor: '#222',
-                color: '#ccc',
-                border: '1px solid #444',
-                padding: '10px 20px',
-                borderRadius: '6px',
-                fontWeight: '500',
-                cursor: 'pointer'
+                flex: 1,
+                padding: '14px',
+                borderRadius: '8px',
+                background: '#fff',
+                color: '#007acc',
+                fontWeight: '600',
+                border: '1px solid #007acc',
+                cursor: 'pointer',
+                fontSize: '16px',
+                transition: 'all 0.2s ease',
+                ':hover': {
+                  backgroundColor: 'rgba(0, 180, 255, 0.1)'
+                }
               }}
             >
               Cancel

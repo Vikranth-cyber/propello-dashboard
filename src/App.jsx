@@ -13,31 +13,37 @@ import './global.css';
 
 function App() {
   const [showAuth, setShowAuth] = useState(false);
-  const [currentPage, setCurrentPage] = useState('Dashboard'); // Tracks selected page name
+  const [currentPage, setCurrentPage] = useState('Dashboard');
 
   const appStyle = {
     display: 'flex',
+    flexDirection: 'row',
     width: '100vw',
     height: '100vh',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
-    backgroundColor: '#0A0A0F',
-    color: '#FFFFFF',
-    boxSizing: 'border-box',
-    fontFamily: "'Inter', sans-serif"
+    backgroundColor: '#FFFFFF',
+    color: '#1F2937', // Gray-800 text
+    fontFamily: "'Inter', sans-serif",
+    boxSizing: 'border-box'
   };
 
   const contentStyle = {
     flex: 1,
-    padding: '30px',
+    padding: '24px',
     overflowY: 'auto',
+    backgroundColor: '#F9FAFB' // light gray card contrast
   };
 
-  // This function will be passed to Sidebar
-  const handlePageSelect = (pageNameOrComponent) => {
-    setCurrentPage(pageNameOrComponent);
+  const gridLayout = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '30px',
+    marginBottom: '30px'
   };
+
+  const handlePageSelect = (page) => setCurrentPage(page);
 
   return (
     <div style={appStyle}>
@@ -56,14 +62,7 @@ function App() {
             <Header onLoginClick={() => setShowAuth(true)} />
             <StatCards />
             <CallsStats />
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '30px',
-                marginBottom: '30px'
-              }}
-            >
+            <div style={gridLayout}>
               <CallGraphs />
               <Transactions />
             </div>
@@ -71,7 +70,7 @@ function App() {
             <BotPerformance />
           </>
         ) : (
-          currentPage // render selected page component
+          currentPage
         )}
       </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MdOutlineContactSupport } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const ContactPage = () => {
     email: '',
     query: ''
   });
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,40 +21,57 @@ const ContactPage = () => {
   };
 
   return (
-    <div style={{ padding: '40px' }}>
+    <div style={{ 
+      padding: isMobile ? '20px' : '40px',
+      backgroundColor: '#fff',
+      minHeight: '100vh'
+    }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '15px',
         marginBottom: '30px'
       }}>
-        <MdOutlineContactSupport size={28} color="#00ff88" />
+        <MdOutlineContactSupport size={28} color="#007acc" />
         <h1 style={{
-          color: '#00ff88',
-          fontSize: '28px',
+          color: '#007acc',
+          fontSize: isMobile ? '22px' : '28px',
           fontWeight: '700',
           margin: 0,
-          textShadow: '0 0 10px rgba(0, 255, 136, 0.3)'
+          letterSpacing: '0.5px'
         }}>
           Contact Support
         </h1>
       </div>
 
       <div style={{
-        backgroundColor: '#121212',
-        padding: '30px',
-        borderRadius: '16px',
-        border: '1px solid rgba(0, 255, 136, 0.1)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-        color: '#ccc'
+        backgroundColor: '#fff',
+        padding: isMobile ? '20px' : '30px',
+        borderRadius: '12px',
+        border: '1px solid rgba(0, 180, 255, 0.2)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+        marginBottom: '30px'
       }}>
-        <p style={{ color: '#00ff88', marginBottom: '20px' }}>
+        <p style={{ 
+          color: '#007acc',
+          fontSize: '16px',
+          marginBottom: '20px',
+          lineHeight: '1.6'
+        }}>
           Need help? Fill out the form below and our team will assist you shortly.
         </p>
         
         <form onSubmit={handleSubmit}>
-          <label style={{ display: 'block', marginBottom: '10px' }}>
-            Name:
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block',
+              color: '#007acc',
+              fontSize: '14px',
+              fontWeight: '600',
+              marginBottom: '8px'
+            }}>
+              Name
+            </label>
             <input
               type="text"
               name="name"
@@ -60,20 +79,33 @@ const ContactPage = () => {
               onChange={handleChange}
               required
               style={{
-                display: 'block',
                 width: '100%',
-                padding: '10px',
-                marginTop: '6px',
-                backgroundColor: '#1f1f1f',
-                border: '1px solid #00ff88',
+                padding: '12px',
                 borderRadius: '8px',
-                color: '#fff'
+                border: '1px solid #007acc',
+                backgroundColor: 'rgba(0, 180, 255, 0.03)',
+                color: '#333',
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+                ':focus': {
+                  outline: 'none',
+                  borderColor: '#00b4ff',
+                  boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+                }
               }}
             />
-          </label>
+          </div>
 
-          <label style={{ display: 'block', marginBottom: '10px' }}>
-            Email:
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block',
+              color: '#007acc',
+              fontSize: '14px',
+              fontWeight: '600',
+              marginBottom: '8px'
+            }}>
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -81,20 +113,33 @@ const ContactPage = () => {
               onChange={handleChange}
               required
               style={{
-                display: 'block',
                 width: '100%',
-                padding: '10px',
-                marginTop: '6px',
-                backgroundColor: '#1f1f1f',
-                border: '1px solid #00ff88',
+                padding: '12px',
                 borderRadius: '8px',
-                color: '#fff'
+                border: '1px solid #007acc',
+                backgroundColor: 'rgba(0, 180, 255, 0.03)',
+                color: '#333',
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+                ':focus': {
+                  outline: 'none',
+                  borderColor: '#00b4ff',
+                  boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+                }
               }}
             />
-          </label>
+          </div>
 
-          <label style={{ display: 'block', marginBottom: '20px' }}>
-            Your Message:
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block',
+              color: '#007acc',
+              fontSize: '14px',
+              fontWeight: '600',
+              marginBottom: '8px'
+            }}>
+              Your Message
+            </label>
             <textarea
               name="query"
               value={formData.query}
@@ -102,47 +147,140 @@ const ContactPage = () => {
               required
               rows="5"
               style={{
-                display: 'block',
                 width: '100%',
-                padding: '10px',
-                marginTop: '6px',
-                backgroundColor: '#1f1f1f',
-                border: '1px solid #00ff88',
+                padding: '12px',
                 borderRadius: '8px',
-                color: '#fff'
+                border: '1px solid #007acc',
+                backgroundColor: 'rgba(0, 180, 255, 0.03)',
+                color: '#333',
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+                ':focus': {
+                  outline: 'none',
+                  borderColor: '#00b4ff',
+                  boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+                }
               }}
             />
-          </label>
+          </div>
 
           <button
             type="submit"
             style={{
-              backgroundColor: '#00ff88',
-              color: '#000',
-              padding: '10px 20px',
-              border: 'none',
+              width: '100%',
+              padding: '14px',
               borderRadius: '8px',
+              background: 'linear-gradient(90deg, #007acc 0%, #00b4ff 100%)',
+              color: '#fff',
               fontWeight: '600',
-              cursor: 'pointer'
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+              boxShadow: '0 4px 15px rgba(0, 180, 255, 0.3)',
+              transition: 'all 0.2s ease',
+              ':hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 6px 20px rgba(0, 180, 255, 0.4)'
+              }
             }}
           >
-            Submit
+            Submit Request
           </button>
         </form>
       </div>
 
       <div style={{
-        marginTop: '30px',
-        backgroundColor: '#1a1a1a',
-        padding: '20px',
+        backgroundColor: '#fff',
+        padding: isMobile ? '20px' : '30px',
         borderRadius: '12px',
-        border: '1px solid rgba(0,255,136,0.08)',
-        color: '#bbb'
+        border: '1px solid rgba(0, 180, 255, 0.2)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
       }}>
-        <h4 style={{ color: '#00ff88' }}>Other Ways to Reach Us</h4>
-        <p>Email: support@propelloai.com</p>
-        <p>Phone: +91-98765-43210</p>
-        <p>Support Hours: Mon–Fri, 9AM–6PM IST</p>
+        <h3 style={{ 
+          color: '#007acc',
+          marginBottom: '16px',
+          fontSize: '18px'
+        }}>
+          Other Ways to Reach Us
+        </h3>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: '20px'
+        }}>
+          <div>
+            <p style={{ 
+              color: '#666',
+              fontSize: '14px',
+              marginBottom: '4px'
+            }}>
+              Email
+            </p>
+            <p style={{ 
+              color: '#333',
+              fontSize: '16px',
+              fontWeight: '600',
+              margin: 0
+            }}>
+              support@propelloai.com
+            </p>
+          </div>
+          
+          <div>
+            <p style={{ 
+              color: '#666',
+              fontSize: '14px',
+              marginBottom: '4px'
+            }}>
+              Phone
+            </p>
+            <p style={{ 
+              color: '#333',
+              fontSize: '16px',
+              fontWeight: '600',
+              margin: 0
+            }}>
+              +91-98765-43210
+            </p>
+          </div>
+          
+          <div>
+            <p style={{ 
+              color: '#666',
+              fontSize: '14px',
+              marginBottom: '4px'
+            }}>
+              Support Hours
+            </p>
+            <p style={{ 
+              color: '#333',
+              fontSize: '16px',
+              fontWeight: '600',
+              margin: 0
+            }}>
+              Mon–Fri, 9AM–6PM IST
+            </p>
+          </div>
+          
+          <div>
+            <p style={{ 
+              color: '#666',
+              fontSize: '14px',
+              marginBottom: '4px'
+            }}>
+              Office Address
+            </p>
+            <p style={{ 
+              color: '#333',
+              fontSize: '16px',
+              fontWeight: '600',
+              margin: 0
+            }}>
+              Hyderabad, India
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

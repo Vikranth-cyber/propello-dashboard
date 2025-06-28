@@ -1,5 +1,6 @@
 import React from 'react';
-import { BsFileText } from 'react-icons/bs';
+import { BsFileText, BsDownload } from 'react-icons/bs';
+import { useMediaQuery } from 'react-responsive';
 
 const scriptFiles = [
   { name: 'Real Estate Lead Intro', file: '/scripts/real-estate-intro.txt' },
@@ -9,71 +10,114 @@ const scriptFiles = [
 ];
 
 const ScriptsPage = () => {
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   return (
-    <div style={{ padding: '40px' }}>
+    <div style={{ 
+      padding: isMobile ? '20px' : '40px',
+      backgroundColor: '#fff',
+      minHeight: '100vh'
+    }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '15px',
         marginBottom: '30px'
       }}>
-        <BsFileText size={28} color="#00ff88" />
+        <BsFileText size={28} color="#007acc" />
         <h1 style={{
-          color: '#00ff88',
-          fontSize: '28px',
+          color: '#007acc',
+          fontSize: isMobile ? '22px' : '28px',
           fontWeight: '700',
           margin: 0,
-          textShadow: '0 0 10px rgba(0, 255, 136, 0.3)'
+          letterSpacing: '0.5px'
         }}>
           Call Scripts
         </h1>
       </div>
 
       <div style={{
-        backgroundColor: 'rgba(10, 20, 15, 0.3)',
-        padding: '30px',
-        borderRadius: '16px',
-        border: '1px solid rgba(0, 255, 136, 0.1)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-        marginBottom: '40px'
+        backgroundColor: 'rgba(0, 180, 255, 0.05)',
+        padding: isMobile ? '20px' : '30px',
+        borderRadius: '12px',
+        border: '1px solid rgba(0, 180, 255, 0.2)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+        marginBottom: '40px',
+        backdropFilter: 'blur(5px)'
       }}>
-        <p style={{ color: 'rgba(0, 255, 136, 0.8)', fontSize: '16px' }}>
+        <p style={{ 
+          color: '#007acc',
+          fontSize: isMobile ? '14px' : '16px',
+          margin: 0,
+          lineHeight: '1.6'
+        }}>
           Download and manage your AI Bot's call scripts below.
         </p>
       </div>
 
       <div style={{
-        backgroundColor: '#121212',
-        border: '1px solid rgba(0,255,136,0.1)',
+        backgroundColor: '#fff',
+        border: '1px solid rgba(0, 180, 255, 0.2)',
         borderRadius: '12px',
-        padding: '20px',
-        boxShadow: '0 0 24px rgba(0,255,136,0.05)'
+        padding: isMobile ? '16px' : '24px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
       }}>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+        <ul style={{ 
+          listStyle: 'none', 
+          padding: 0, 
+          margin: 0,
+          display: 'grid',
+          gap: '12px'
+        }}>
           {scriptFiles.map((script, i) => (
             <li key={i} style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '14px 0',
-              borderBottom: i !== scriptFiles.length - 1 ? '1px solid rgba(0,255,136,0.1)' : 'none'
+              padding: isMobile ? '12px' : '16px',
+              backgroundColor: 'rgba(0, 180, 255, 0.03)',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 180, 255, 0.1)',
+              transition: 'all 0.2s ease',
+              ':hover': {
+                backgroundColor: 'rgba(0, 180, 255, 0.08)'
+              }
             }}>
-              <span style={{ color: '#ccc', fontSize: '15px' }}>{script.name}</span>
+              <div>
+                <h4 style={{ 
+                  color: '#007acc',
+                  margin: '0 0 4px 0',
+                  fontSize: '16px'
+                }}>{script.name}</h4>
+                <p style={{ 
+                  color: '#666',
+                  margin: 0,
+                  fontSize: '14px'
+                }}>Last updated: {new Date().toLocaleDateString()}</p>
+              </div>
               <a
                 href={script.file}
                 download
                 style={{
-                  backgroundColor: '#00ff88',
-                  color: '#000',
-                  padding: '6px 12px',
+                  backgroundColor: '#007acc',
+                  color: '#fff',
+                  padding: '8px 16px',
                   borderRadius: '6px',
                   fontSize: '14px',
                   fontWeight: '600',
                   textDecoration: 'none',
-                  boxShadow: '0 0 10px rgba(0,255,136,0.3)'
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.2s ease',
+                  ':hover': {
+                    backgroundColor: '#0066b3',
+                    transform: 'translateY(-2px)'
+                  }
                 }}
               >
-                Download
+                <BsDownload size={16} />
+                {!isMobile && 'Download'}
               </a>
             </li>
           ))}

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { FiHome, FiShoppingBag, FiPackage, FiBriefcase } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
 import {
   RiDashboardLine,
   RiSettingsLine,
   RiUserLine,
   RiLockLine,
-  RiWalletLine
+  RiWalletLine,
+  RiMenu3Line,
+  RiCloseLine
 } from 'react-icons/ri';
 import {
   MdOutlineAnalytics,
@@ -16,11 +17,7 @@ import {
 } from 'react-icons/md';
 import { BsMic, BsFileText } from 'react-icons/bs';
 
-// Import all page components
-import RealEstatePage from '../Sidebar/RealEstatePage';
-import RetailPage from '../Sidebar/RetailPage';
-import PharmaPage from '../Sidebar/PharmaPage';
-import CommercialPage from '../Sidebar/CommercialPage';
+// Import page components
 import RecordingsPage from '../Sidebar/RecordingsPage';
 import ScriptsPage from '../Sidebar/ScriptsPage';
 import AnalyticsPage from '../Sidebar/AnalyticsPage';
@@ -36,26 +33,28 @@ import ContactPage from '../Sidebar/ContactPage';
 const Sidebar = ({ onSelectPage }) => {
   const [activeItem, setActiveItem] = useState('Dashboard');
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 1024; // Changed to 1024 for better tablet support
+      setIsMobile(mobile);
+      if (!mobile) setSidebarOpen(true);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handlePageSelect = (name) => {
     setActiveItem(name);
 
     if (name === 'Dashboard') {
-      onSelectPage('Dashboard'); // Special case for Dashboard
+      onSelectPage('Dashboard');
     } else {
       switch (name) {
-        case 'Real Estate':
-          onSelectPage(<RealEstatePage />);
-          break;
-        case 'Retail':
-          onSelectPage(<RetailPage />);
-          break;
-        case 'Pharma':
-          onSelectPage(<PharmaPage />);
-          break;
-        case 'Commercial':
-          onSelectPage(<CommercialPage />);
-          break;
         case 'Recordings':
           onSelectPage(<RecordingsPage />);
           break;
@@ -93,6 +92,7 @@ const Sidebar = ({ onSelectPage }) => {
           onSelectPage('Dashboard');
       }
     }
+    if (isMobile) setSidebarOpen(false);
   };
 
   const renderButton = (name, icon) => {
@@ -106,9 +106,9 @@ const Sidebar = ({ onSelectPage }) => {
         onMouseEnter={() => setHoveredItem(name)}
         onMouseLeave={() => setHoveredItem(null)}
         style={{
-          margin: '12px 0',
+          margin: '8px 0',
           padding: '14px 20px',
-          borderRadius: '8px',
+          borderRadius: '10px',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -116,115 +116,211 @@ const Sidebar = ({ onSelectPage }) => {
           fontSize: '15px',
           fontWeight: '500',
           border: 'none',
-          background: isActive ? 'rgba(0,255,136,0.1)' : 'transparent',
-          color: isActive ? '#fff' : '#00ff88',
-          borderLeft: isActive ? '3px solid #00ff88' : 'none',
+          background: isActive ? 'rgba(0, 180, 255, 0.1)' : 'transparent',
+          color: isActive ? '#007acc' : '#444',
+          borderLeft: isActive ? '4px solid #007acc' : 'none',
           textAlign: 'left',
           width: '100%',
-          textShadow: isActive ? '0 0 6px #00ff88' : 'none'
+          transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+          transform: isHovered ? 'translateX(4px)' : 'none',
+          ':hover': {
+            background: !isActive && 'rgba(0, 180, 255, 0.08)',
+            color: !isActive && '#007acc'
+          }
         }}
       >
-        {icon}
+        <span style={{ 
+          fontSize: '20px', 
+          display: 'flex',
+          transition: 'transform 0.2s ease',
+          transform: isHovered ? 'scale(1.1)' : 'scale(1)'
+        }}>
+          {icon}
+        </span>
         <span>{name}</span>
       </button>
     );
   };
 
   return (
-    <aside
-      style={{
-        width: '280px',
-        backgroundColor: '#0A0A0F',
-        height: '100vh',
-        padding: '40px 20px',
-        color: '#B0B0B8',
-        overflowY: 'auto',
-        boxShadow: '10px 0 30px rgba(0,0,0,0.3)'
-      }}
-    >
-      <h1
-        style={{
-          color: '#00ff88',
-          fontSize: '24px',
-          fontWeight: '700',
-          marginBottom: '40px'
-        }}
-      >
-        PROPELLO AI
-      </h1>
-
-      {/* Main Navigation */}
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {renderButton('Dashboard', <RiDashboardLine />)}
-      </ul>
-
+    <>
+      {isMobile && (
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          style={{
+            position: 'fixed',
+            top: '24px',
+            right: '24px', // Changed to right for better mobile ergonomics
+            zIndex: 1000,
+            background: '#007acc',
+            border: 'none',
+            borderRadius: '50%',
+            width: '48px',
+            height: '48px',
+            padding: '12px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(0, 122, 204, 0.3)',
+            transition: 'all 0.3s ease',
+            ':hover': {
+              background: '#0066a7',
+              transform: 'scale(1.1)',
+              boxShadow: '0 6px 16px rgba(0, 122, 204, 0.4)'
+            },
+            ':active': {
+              transform: 'scale(0.95)'
+            }
+          }}
+          aria-label="Toggle menu"
+        >
+          {sidebarOpen ? (
+            <RiCloseLine 
+              style={{ 
+                color: 'white', 
+                fontSize: '24px',
+                transition: 'transform 0.3s ease',
+                transform: sidebarOpen ? 'rotate(90deg)' : 'none'
+              }} 
+            />
+          ) : (
+            <RiMenu3Line 
+              style={{ 
+                color: 'white', 
+                fontSize: '24px',
+                transition: 'transform 0.3s ease'
+              }} 
+            />
+          )}
+        </button>
+      )}
+      
       <div
         style={{
-          color: '#00ff88',
-          margin: '32px 0 12px 20px',
-          fontSize: '12px',
-          fontWeight: '600'
+          position: isMobile ? 'fixed' : 'relative',
+          zIndex: 900,
+          transform: isMobile ? 
+            (sidebarOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
+          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+          height: '100%',
+          width: isMobile ? '280px' : '300px',
+          backgroundColor: '#fff',
+          boxShadow: isMobile ? '4px 0 30px rgba(0, 0, 0, 0.1)' : '2px 0 20px rgba(0, 0, 0, 0.05)',
+          borderRight: isMobile ? 'none' : '1px solid rgba(0, 0, 0, 0.05)'
         }}
       >
-        Campaigns
-      </div>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {renderButton('Real Estate', <FiHome />)}
-        {renderButton('Retail', <FiShoppingBag />)}
-        {renderButton('Pharma', <FiPackage />)}
-        {renderButton('Commercial', <FiBriefcase />)}
-      </ul>
+        {sidebarOpen && (
+          <aside
+            style={{
+              width: '100%',
+              height: '100%',
+              padding: '28px 20px',
+              color: '#333',
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#007acc transparent'
+            }}
+          >
+            <h1
+              style={{
+                color: '#007acc',
+                fontSize: '24px',
+                fontWeight: '700',
+                marginBottom: '36px',
+                paddingLeft: '12px',
+                letterSpacing: '0.8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 17L12 22L22 17" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 12L12 17L22 12" fill="#007acc" stroke="#007acc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              PROPELLO AI
+            </h1>
 
-      <div
-        style={{
-          color: '#00ff88',
-          margin: '32px 0 12px 20px',
-          fontSize: '12px',
-          fontWeight: '600'
-        }}
-      >
-        Call Center
-      </div>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {renderButton('Recordings', <BsMic />)}
-        {renderButton('Scripts', <BsFileText />)}
-        {renderButton('Analytics', <MdOutlineAnalytics />)}
-        {renderButton('Scheduling', <MdOutlineSchedule />)}
-      </ul>
+            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+              {renderButton('Dashboard', <RiDashboardLine />)}
+            </ul>
 
-      <div
-        style={{
-          color: '#00ff88',
-          margin: '32px 0 12px 20px',
-          fontSize: '12px',
-          fontWeight: '600'
-        }}
-      >
-        Account
-      </div>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {renderButton('Profile', <RiUserLine />)}
-        {renderButton('Security', <RiLockLine />)}
-        {renderButton('Settings', <RiSettingsLine />)}
-        {renderButton('Billing', <RiWalletLine />)}
-      </ul>
+            <div
+              style={{
+                color: '#007acc',
+                margin: '12px 0 12px 16px',
+                fontSize: '12px',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+              <span>Call Center</span>
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+            </div>
+            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+              {renderButton('Recordings', <BsMic />)}
+              {renderButton('Scripts', <BsFileText />)}
+              {renderButton('Analytics', <MdOutlineAnalytics />)}
+              {renderButton('Scheduling', <MdOutlineSchedule />)}
+            </ul>
 
-      <div
-        style={{
-          color: '#00ff88',
-          margin: '32px 0 12px 20px',
-          fontSize: '12px',
-          fontWeight: '600'
-        }}
-      >
-        Support
+            <div
+              style={{
+                color: '#007acc',
+                margin: '12px 0 12px 16px',
+                fontSize: '12px',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+              <span>Account</span>
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+            </div>
+            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '28px' }}>
+              {renderButton('Profile', <RiUserLine />)}
+              {renderButton('Security', <RiLockLine />)}
+              {renderButton('Settings', <RiSettingsLine />)}
+              {renderButton('Billing', <RiWalletLine />)}
+            </ul>
+
+            <div
+              style={{
+                color: '#007acc',
+                margin: '12px 0 12px 16px',
+                fontSize: '12px',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+              <span>Support</span>
+              <div style={{ height: '1px', background: 'rgba(0, 122, 204, 0.2)', flex: 1 }}></div>
+            </div>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {renderButton('Help Center', <MdOutlineHelp />)}
+              {renderButton('Docs', <MdOutlineLibraryBooks />)}
+              {renderButton('Contact', <MdOutlineContactSupport />)}
+            </ul>
+          </aside>
+        )}
       </div>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {renderButton('Help Center', <MdOutlineHelp />)}
-        {renderButton('Docs', <MdOutlineLibraryBooks />)}
-        {renderButton('Contact', <MdOutlineContactSupport />)}
-      </ul>
-    </aside>
+    </>
   );
 };
 

@@ -1,124 +1,96 @@
 import React from 'react';
-import { FiDownload, FiEye } from 'react-icons/fi';
+import { FiActivity, FiPhoneOff, FiPhoneCall } from 'react-icons/fi';
 
-const transactionData = [
-  { id: 1, title: 'Account Top-Up', date: 'Today, 10:45 AM', amount: '+$2,000.00', type: 'positive', icon: '💳' },
-  { id: 2, title: 'Service Subscription', date: 'Today, 09:30 AM', amount: '-$500.00', type: 'negative', icon: '🔄' },
-  { id: 3, title: 'Usage Charges', date: 'Yesterday, 08:15 PM', amount: '-$320.50', type: 'negative', icon: '⚡' },
-  { id: 4, title: 'Initial Deposit', date: 'Yesterday, 12:00 AM', amount: '+$5,000.00', type: 'positive', icon: '💰' }
+const stageData = [
+  { id: 1, stage: 'Call Dialed', status: 'Passed', time: 'Today, 10:45 AM', color: '#10B981', icon: <FiPhoneCall /> },
+  { id: 2, stage: 'Ringing', status: 'Passed', time: 'Today, 10:45 AM', color: '#3B82F6', icon: <FiActivity /> },
+  { id: 3, stage: 'Picked', status: 'Missed', time: 'Today, 10:45 AM', color: '#F59E0B', icon: <FiPhoneOff /> },
+  { id: 4, stage: 'Connected', status: 'Failed', time: 'Today, 10:45 AM', color: '#EF4444', icon: <FiPhoneOff /> },
 ];
 
 const Transactions = () => {
-  const containerStyle = {
-    background: 'linear-gradient(135deg, rgba(10, 20, 15, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%)',
-    padding: '25px',
-    borderRadius: '16px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    height: '100%',
-    border: '1px solid rgba(0, 255, 136, 0.1)'
-  };
-
-  const headerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '25px',
-    color: '#fff',
-  };
-
-  const viewAllStyle = {
-    color: '#00ff88',
-    textDecoration: 'none',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    ':hover': {
-      textDecoration: 'underline',
-      textShadow: '0 0 8px rgba(0, 255, 136, 0.3)'
-    }
-  };
-
-  const transactionStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '15px 0',
-    borderBottom: '1px solid rgba(0, 255, 136, 0.05)',
-    color: '#fff',
-    ':last-child': {
-      borderBottom: 'none'
-    }
-  };
-
-  const detailsStyle = {
-    flex: 1,
-    marginLeft: '15px',
-  };
-
-  const dateStyle = {
-    color: 'rgba(0, 255, 136, 0.7)',
-    fontSize: '13px',
-    marginTop: '4px'
-  };
-
-  const actionButtonStyle = {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: 'rgba(0, 255, 136, 0.7)',
-    cursor: 'pointer',
-    fontSize: '16px',
-    padding: '8px',
-    borderRadius: '50%',
-    transition: 'all 0.2s ease',
-    ':hover': {
-      backgroundColor: 'rgba(0, 255, 136, 0.1)',
-      color: '#00ff88'
-    }
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={headerStyle}>
-        <div style={{ fontSize: '18px', fontWeight: 600, color: '#00ff88' }}>Recent Transactions</div>
-        <div style={viewAllStyle}>View All</div>
+    <div style={{
+      backgroundColor: '#ffffff',
+      padding: '25px',
+      borderRadius: '16px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+      border: '1px solid #E5E7EB',
+      height: '100%',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '25px',
+        flexWrap: 'wrap',
+        gap: '10px'
+      }}>
+        <div style={{ fontSize: '18px', fontWeight: 600, color: '#0EA5E9' }}>Call Disconnection Stages</div>
+        <div style={{
+          color: '#10B981',
+          fontSize: '14px',
+          fontWeight: '600',
+          cursor: 'pointer'
+        }}>
+          View Logs
+        </div>
       </div>
-      
-      {transactionData.map(txn => (
-        <div key={txn.id} style={transactionStyle}>
+
+      {stageData.map(stage => (
+        <div key={stage.id} style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '16px 0',
+          borderBottom: '1px solid #F3F4F6',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          {/* Icon Box */}
           <div style={{
             width: 42,
             height: 42,
-            backgroundColor: 'rgba(0, 255, 136, 0.1)',
             borderRadius: '10px',
+            backgroundColor: `${stage.color}15`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '18px',
-            color: '#00ff88'
+            fontSize: '20px',
+            color: stage.color
           }}>
-            {txn.icon}
+            {stage.icon}
           </div>
-          <div style={detailsStyle}>
-            <div style={{ fontWeight: 600 }}>{txn.title}</div>
-            <div style={dateStyle}>{txn.date}</div>
+
+          {/* Stage Details */}
+          <div style={{ flex: 1, marginLeft: '15px', minWidth: '180px' }}>
+            <div style={{ fontWeight: 600, color: '#111827' }}>{stage.stage}</div>
+            <div style={{ fontSize: '13px', color: '#6B7280', marginTop: '4px' }}>{stage.time}</div>
           </div>
-          <div style={{ 
-            fontWeight: '700', 
-            color: txn.type === 'positive' ? '#00ff88' : '#FF5252',
-            fontSize: '15px',
+
+          {/* Status */}
+          <div style={{
+            fontWeight: '700',
+            color: stage.color,
+            fontSize: '14px',
             marginRight: '15px'
           }}>
-            {txn.amount}
+            {stage.status}
           </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button style={actionButtonStyle} title="View Details">
-              <FiEye />
-            </button>
-            <button style={actionButtonStyle} title="Download Receipt">
-              <FiDownload />
-            </button>
-          </div>
+
+          {/* Optional Action (could be details/logs) */}
+          <button style={{
+            backgroundColor: 'transparent',
+            border: `1px solid ${stage.color}33`,
+            color: stage.color,
+            fontSize: '13px',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: '0.2s ease'
+          }}>
+            Investigate
+          </button>
         </div>
       ))}
     </div>

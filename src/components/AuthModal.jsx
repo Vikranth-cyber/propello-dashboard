@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 const AuthModal = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +20,46 @@ const AuthModal = ({ onClose }) => {
     setShowForgotPassword(false);
   };
 
+  const inputStyle = {
+    display: 'block',
+    width: '100%',
+    padding: isMobile ? '12px 14px' : '14px 16px',
+    margin: '8px 0',
+    backgroundColor: '#fff',
+    border: '1px solid #007acc',
+    borderRadius: '6px',
+    color: '#333',
+    fontSize: '14px',
+    transition: 'all 0.3s ease',
+    ':focus': {
+      borderColor: '#00b4ff',
+      outline: 'none',
+      boxShadow: '0 0 0 2px rgba(0, 180, 255, 0.2)'
+    }
+  };
+
+  const btnStyle = {
+    background: 'linear-gradient(90deg, #00b4ff 0%, #007acc 100%)',
+    color: '#fff',
+    padding: isMobile ? '12px' : '14px',
+    width: '100%',
+    border: 'none',
+    borderRadius: '6px',
+    fontWeight: '600',
+    fontSize: '15px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 2px 10px rgba(0, 180, 255, 0.3)',
+    marginTop: '10px',
+    ':hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 15px rgba(0, 180, 255, 0.4)'
+    },
+    ':active': {
+      transform: 'translateY(0)'
+    }
+  };
+
   return (
     <div style={{ 
       position: 'fixed', 
@@ -25,40 +67,28 @@ const AuthModal = ({ onClose }) => {
       left: 0, 
       right: 0, 
       bottom: 0, 
-      backgroundColor: 'rgba(0,0,0,0.8)', 
+      backgroundColor: 'rgba(255,255,255,0.9)', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
-      zIndex: 1000
+      zIndex: 1000,
+      backdropFilter: 'blur(5px)'
     }}>
       <div style={{ 
-        backgroundColor: '#121218', 
-        padding: '40px', 
-        borderRadius: '16px', 
-        width: '400px',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-        border: '1px solid rgba(0, 255, 136, 0.1)',
-        position: 'relative',
-        overflow: 'hidden',
-        '::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.03) 0%, rgba(0, 255, 136, 0) 100%)',
-          zIndex: -1
-        }
+        backgroundColor: '#fff', 
+        padding: isMobile ? '25px' : '40px', 
+        borderRadius: '12px', 
+        width: isMobile ? '90%' : '400px',
+        boxShadow: '0 5px 20px rgba(0,0,0,0.1)',
+        border: '1px solid rgba(0, 180, 255, 0.3)'
       }}>
         {showForgotPassword ? (
           <>
             <h2 style={{ 
-              color: '#00ff88', 
-              marginBottom: '25px', 
-              fontSize: '24px',
-              textAlign: 'center',
-              textShadow: '0 0 10px rgba(0, 255, 136, 0.3)'
+              color: '#007acc', 
+              marginBottom: '20px', 
+              fontSize: isMobile ? '20px' : '24px',
+              textAlign: 'center'
             }}>
               Reset Password
             </h2>
@@ -78,8 +108,8 @@ const AuthModal = ({ onClose }) => {
               </button>
               
               <p style={{ 
-                color: 'rgba(0, 255, 136, 0.7)', 
-                marginTop: '20px', 
+                color: '#666', 
+                marginTop: '15px', 
                 textAlign: 'center',
                 fontSize: '14px'
               }}>
@@ -87,14 +117,10 @@ const AuthModal = ({ onClose }) => {
                 <span 
                   onClick={() => setShowForgotPassword(false)} 
                   style={{ 
-                    color: '#00ff88', 
+                    color: '#007acc', 
                     cursor: 'pointer',
                     fontWeight: '600',
-                    textShadow: '0 0 8px rgba(0, 255, 136, 0.3)',
-                    transition: 'all 0.2s ease',
-                    ':hover': {
-                      textShadow: '0 0 12px rgba(0, 255, 136, 0.5)'
-                    }
+                    transition: 'all 0.2s ease'
                   }}
                 > 
                   Sign In
@@ -105,11 +131,10 @@ const AuthModal = ({ onClose }) => {
         ) : (
           <>
             <h2 style={{ 
-              color: '#00ff88', 
-              marginBottom: '25px', 
-              fontSize: '24px',
-              textAlign: 'center',
-              textShadow: '0 0 10px rgba(0, 255, 136, 0.3)'
+              color: '#007acc', 
+              marginBottom: '20px', 
+              fontSize: isMobile ? '20px' : '24px',
+              textAlign: 'center'
             }}>
               Welcome to PROPELLO AI
             </h2>
@@ -135,16 +160,11 @@ const AuthModal = ({ onClose }) => {
               <p 
                 onClick={() => setShowForgotPassword(true)}
                 style={{ 
-                  color: '#00ff88', 
+                  color: '#007acc', 
                   cursor: 'pointer', 
                   fontSize: '14px',
                   textAlign: 'right',
-                  margin: '10px 0 20px',
-                  textShadow: '0 0 8px rgba(0, 255, 136, 0.2)',
-                  transition: 'all 0.2s ease',
-                  ':hover': {
-                    textShadow: '0 0 12px rgba(0, 255, 136, 0.4)'
-                  }
+                  margin: '8px 0 15px'
                 }}
               >
                 Forgot Password?
@@ -160,24 +180,19 @@ const AuthModal = ({ onClose }) => {
         <button 
           onClick={onClose} 
           style={{ 
-            marginTop: '20px', 
+            marginTop: '15px', 
             background: 'none', 
-            border: '1px solid rgba(0, 255, 136, 0.3)', 
-            color: '#00ff88', 
-            padding: '12px 16px',
+            border: '1px solid #007acc', 
+            color: '#007acc', 
+            padding: isMobile ? '10px' : '12px 16px',
             width: '100%',
-            borderRadius: '8px',
+            borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '14px',
             fontWeight: '600',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'all 0.3s ease',
             ':hover': {
-              background: 'rgba(0, 255, 136, 0.1)',
-              boxShadow: '0 4px 15px rgba(0, 255, 136, 0.2)',
-              transform: 'translateY(-2px)'
-            },
-            ':active': {
-              transform: 'translateY(0)'
+              background: 'rgba(0, 180, 255, 0.1)'
             }
           }}
         >
@@ -186,62 +201,6 @@ const AuthModal = ({ onClose }) => {
       </div>
     </div>
   );
-};
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  padding: '14px 16px',
-  margin: '10px 0',
-  backgroundColor: 'rgba(0, 255, 136, 0.03)',
-  border: '1px solid rgba(0, 255, 136, 0.2)',
-  borderRadius: '8px',
-  color: '#fff',
-  fontSize: '14px',
-  transition: 'all 0.3s ease',
-  ':focus': {
-    borderColor: '#00ff88',
-    outline: 'none',
-    boxShadow: '0 0 0 2px rgba(0, 255, 136, 0.2)',
-    backgroundColor: 'rgba(0, 255, 136, 0.05)'
-  }
-};
-
-const btnStyle = {
-  background: 'linear-gradient(90deg, #00ff88 0%, #00cc6a 100%)',
-  color: '#000',
-  padding: '14px',
-  width: '100%',
-  border: 'none',
-  borderRadius: '8px',
-  fontWeight: '700',
-  fontSize: '15px',
-  cursor: 'pointer',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  boxShadow: '0 4px 15px rgba(0, 255, 136, 0.3)',
-  position: 'relative',
-  overflow: 'hidden',
-  ':hover': {
-    transform: 'translateY(-3px)',
-    boxShadow: '0 6px 20px rgba(0, 255, 136, 0.4)',
-    '::after': {
-      opacity: 1
-    }
-  },
-  ':active': {
-    transform: 'translateY(0)'
-  },
-  '::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease'
-  }
 };
 
 export default AuthModal;
